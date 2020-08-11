@@ -84,21 +84,19 @@ class Graph:
                 for next_vertex in self.get_neighbors(v):
                     s.push(next_vertex)
 
-    def dft_recursive(self, starting_vertex, visited=None):
+    def dft_recursive(self, starting_vertex, visited=set()):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        if visited is None:
-            visited = set()
+        if starting_vertex in visited:
+            return
         visited.add(starting_vertex)
-        print(starting_vertex)
-
         for v in self.get_neighbors(starting_vertex):
-            if v not in visited:
-                self.dft_recursive(v, visited) 
+            self. dft_recursive(v, visited=visited)
+
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -144,7 +142,7 @@ class Graph:
                 path_copy.append(next_v)
                 q.push(path_copy)
 
-    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=set()):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
@@ -152,18 +150,20 @@ class Graph:
 
         This should be done using recursion.
         """
-        if visited is None:
-            visited = set()
-        visited.add(starting_vertex)
-        s = Stack()
-        print(starting_vertex)
 
-       
+        if starting_vertex in visited:
+            return None
+        visited.add(starting_vertex)
+
+        if starting_vertex == destination_vertex:
+            return [starting_vertex]
+
         for v in self.get_neighbors(starting_vertex):
-            path = s.pop()
-            v = path[-1]
-            if v not in visited:
-                self.dft_recursive(v, visited) 
+            subpath = self.dfs_recursive(v, destination_vertex, visited=visited)
+            if subpath is not None:
+                return [starting_vertex, *subpath]
+
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
