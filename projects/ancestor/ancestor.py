@@ -1,32 +1,21 @@
-from util import Stack
+from util import Graph
 
-# def earliest_ancestor(ancestors, starting_node):
-#     s = Stack()
-#     visited = set()
-#     s.push([begin_word])
-#     while s.size() > 0:
-#         path = s.pop()
-#         v = path[-1]
 
-#         if v not in visited:
-#             visited.add(v)
-#             if v == end_word:
-#                 return path
+def earliest_ancestor(ancestors, starting_node):
+    graph = Graph()
+    for vert in ancestors:
+        graph.add_vertex(vert[0])
+        graph.add_vertex(vert[1])
 
-#             for neighbor in get_neighbors(v):
-#                 path_copy = list(path)
-#                 path_copy.append(neighbor)
-#                 s.push(path_copy)
+    for vert in ancestors:
+        graph.add_edge(vert[1], vert[0])
 
-def earliest_ancestor(self, ancestors, starting_node, visited=set()):
-    if ancestors in visited:
-        return None
-    visited.add(ancestors)
+    # print(graph.dft(starting_node))
 
-    if ancestors == starting_node:
-        return [ancestors]
+    # print(graph.vertices)
 
-    for v in self.get_neighbors(ancestors):
-        subpath = self.earliest_ancestor(v, starting_node, visited=visited)
-        if subpath is not None:
-            return [ancestors, *subpath]
+    earliest = graph.dft(starting_node)[-1]
+    if earliest == starting_node:
+        return -1
+    else:
+        return earliest
