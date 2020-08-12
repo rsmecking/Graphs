@@ -14,7 +14,7 @@ def earliest_ancestor(ancestors, starting_node):
 
     # print(graph.vertices)
 
-    earliest = graph.dft(starting_node)[-1]
+    earliest = graph.bft(starting_node)[-1]
     if earliest == starting_node:
         return -1
     else:
