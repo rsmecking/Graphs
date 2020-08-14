@@ -1,7 +1,37 @@
 """
 Simple graph implementation
 """
-from util import Stack, Queue  # These may come in handy
+
+
+# Note: This Queue class is sub-optimal. Why?
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
+class Stack():
+    def __init__(self):
+        self.stack = []
+    def push(self, value):
+        self.stack.append(value)
+    def pop(self):
+        if self.size() > 0:
+            return self.stack.pop()
+        else:
+            return None
+    def size(self):
+        return len(self.stack)
+
+
+# from util import Stack, Queue  # These may come in handy
 
 class Graph:
 
@@ -39,6 +69,7 @@ class Graph:
         queue = Queue()
         queue.enqueue(starting_vertex)
         visited = set()
+        ancestry = list()
 
         while queue.size() > 0:
             vertex = queue.dequeue()
@@ -145,7 +176,6 @@ class Graph:
                     new_path.append(next_vert)
                     stack.push(new_path)
 
-    # https://www.youtube.com/watch?v=0s_KOkMIhrQ&feature=youtu.be
     def dfs_recursive(self, starting_vertex, target_value, visited=None, path=None):
         """
         Return a list containing a path from
@@ -173,72 +203,74 @@ class Graph:
 
         return None
 
+# if __name__ == '__main__':
+#     graph = Graph()  # Instantiate your graph
+#     # https://github.com/LambdaSchool/Graphs/blob/master/objectives/breadth-first-search/img/bfs-visit-order.png
+#     graph.add_vertex(1)
+#     graph.add_vertex(2)
+#     graph.add_vertex(3)
+#     graph.add_vertex(4)
+#     graph.add_vertex(5)
+#     graph.add_vertex(6)
+#     graph.add_vertex(7)
+#     graph.add_edge(5, 3)
+#     graph.add_edge(6, 3)
+#     graph.add_edge(7, 1)
+#     graph.add_edge(4, 7)
+#     graph.add_edge(1, 2)
+#     graph.add_edge(7, 6)
+#     graph.add_edge(2, 4)
+#     graph.add_edge(3, 5)
+#     graph.add_edge(2, 3)
+#     graph.add_edge(4, 6)
 
+#     '''
+#     Should print:
+#         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
+#     '''
+#     print(f'Printing graph.vertices:\n {graph.vertices}\n')
 
-if __name__ == '__main__':
-    graph = Graph()  # Instantiate your graph
-    # https://github.com/LambdaSchool/Graphs/blob/master/objectives/breadth-first-search/img/bfs-visit-order.png
-    graph.add_vertex(1)
-    graph.add_vertex(2)
-    graph.add_vertex(3)
-    graph.add_vertex(4)
-    graph.add_vertex(5)
-    graph.add_vertex(6)
-    graph.add_vertex(7)
-    graph.add_edge(5, 3)
-    graph.add_edge(6, 3)
-    graph.add_edge(7, 1)
-    graph.add_edge(4, 7)
-    graph.add_edge(1, 2)
-    graph.add_edge(7, 6)
-    graph.add_edge(2, 4)
-    graph.add_edge(3, 5)
-    graph.add_edge(2, 3)
-    graph.add_edge(4, 6)
+#     '''
+#     Valid BFT paths:
+#         1, 2, 3, 4, 5, 6, 7
+#         1, 2, 3, 4, 5, 7, 6
+#         1, 2, 3, 4, 6, 7, 5
+#         1, 2, 3, 4, 6, 5, 7
+#         1, 2, 3, 4, 7, 6, 5
+#         1, 2, 3, 4, 7, 5, 6
+#         1, 2, 4, 3, 5, 6, 7
+#         1, 2, 4, 3, 5, 7, 6
+#         1, 2, 4, 3, 6, 7, 5
+#         1, 2, 4, 3, 6, 5, 7
+#         1, 2, 4, 3, 7, 6, 5
+#         1, 2, 4, 3, 7, 5, 6
+#     '''
+#     print('Running BFT:')
+#     graph.bft(1)
 
-    '''
-    Should print:
-        {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
-    '''
-    print(graph.vertices)
+#     '''
+#     Valid DFT paths:
+#         1, 2, 3, 5, 4, 6, 7
+#         1, 2, 3, 5, 4, 7, 6
+#         1, 2, 4, 7, 6, 3, 5
+#         1, 2, 4, 6, 3, 5, 7
+#     '''
+#     print('\nRunning DFT:')
+#     graph.dft(1)
+#     print('\nRunning Recursive DFT:')
+#     graph.dft_recursive(1)
 
-    '''
-    Valid BFT paths:
-        1, 2, 3, 4, 5, 6, 7
-        1, 2, 3, 4, 5, 7, 6
-        1, 2, 3, 4, 6, 7, 5
-        1, 2, 3, 4, 6, 5, 7
-        1, 2, 3, 4, 7, 6, 5
-        1, 2, 3, 4, 7, 5, 6
-        1, 2, 4, 3, 5, 6, 7
-        1, 2, 4, 3, 5, 7, 6
-        1, 2, 4, 3, 6, 7, 5
-        1, 2, 4, 3, 6, 5, 7
-        1, 2, 4, 3, 7, 6, 5
-        1, 2, 4, 3, 7, 5, 6
-    '''
-    graph.bft(1)
+#     '''
+#     Valid BFS path:
+#         [1, 2, 4, 6]
+#     '''
+#     print(f'\nRunning BFS:\n {graph.bfs(1, 6)}\n')
 
-    '''
-    Valid DFT paths:
-        1, 2, 3, 5, 4, 6, 7
-        1, 2, 3, 5, 4, 7, 6
-        1, 2, 4, 7, 6, 3, 5
-        1, 2, 4, 6, 3, 5, 7
-    '''
-    graph.dft(1)
-    graph.dft_recursive(1)
+#     '''
+#     Valid DFS paths:
+#         [1, 2, 4, 6]
+#         [1, 2, 4, 7, 6]
+#     '''
+#     print(f'\nRunning DFS:\n {graph.dfs(1, 6)}\n')
 
-    '''
-    Valid BFS path:
-        [1, 2, 4, 6]
-    '''
-    print(graph.bfs(1, 6))
-
-    '''
-    Valid DFS paths:
-        [1, 2, 4, 6]
-        [1, 2, 4, 7, 6]
-    '''
-    print(graph.dfs(1, 6))
-    print(graph.dfs_recursive(1, 6))
+#     print(f'\nRunning Recursive DFS:\n {graph.dfs_recursive(1, 6)}\n')
